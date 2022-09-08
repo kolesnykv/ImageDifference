@@ -5,6 +5,7 @@ import com.knubisfot.Point;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ProcessingUtils {
@@ -49,6 +50,8 @@ public class ProcessingUtils {
     }
 
     private void formGroups(List<Point> points, List<List<Point>> groups) {
+        Comparator<Point> pointComparator = Comparator.comparingInt(Point::getX);
+        points.sort(pointComparator);
         while (!points.isEmpty()) {
             List<Point> group = new ArrayList<>();
             Point firstpoint = points.get(0);
@@ -59,23 +62,31 @@ public class ProcessingUtils {
             }
             points.removeAll(group);
             mergeOrAddNewGroup(groups, group);
+
         }
     }
 
+
     private void mergeOrAddNewGroup(List<List<Point>> groups, List<Point> group) {
-        boolean flag = true;
+        boolean flag = false;
         for (List<Point> list : groups) {
-            Point fmp = group.get(group.size() / 2);
-            for(Point p: list) {
-                if (calculateDistance(fmp.getX(), fmp.getY(), p.getX(), p.getY()) < 50) {
-                    flag = false;
+            for (Point fmp : group) {
+                for (Point p : list) {
+                    if (calculateDistance(fmp.getX(), fmp.getY(), p.getX(), p.getY()) < 30) {
+                        flag = true;
+                        list.addAll(group);
+                        break;
+                    }
+                }
+                if (flag) {
+                    break;
                 }
             }
-            if(!flag){
-                list.addAll(group);
+            if(flag) {
+                break;
             }
         }
-        if (flag) {
+        if (!flag) {
             groups.add(group);
         }
     }

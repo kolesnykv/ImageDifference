@@ -11,8 +11,8 @@ import java.io.File;
 public class Main {
     @SneakyThrows
     public static void main(String[] args) {
-        BufferedImage input1 = ImageIO.read(new File("src/main/resources/img.png"));
-        BufferedImage input2 = ImageIO.read(new File("src/main/resources/img_1.png"));
+        BufferedImage input1 = ImageIO.read(new File("src/main/resources/img_4.png"));
+        BufferedImage input2 = ImageIO.read(new File("src/main/resources/img_3.png"));
         ImageIO.write(new ProcessingUtils().getDifferenceImage(input1, input2), "jpg", new File("src/main/resources/img_2.png"));
     }
 }
